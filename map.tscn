@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://c6utant371od4"]
+
+[ext_resource type="Texture2D" uid="uid://dut33ulomt1ea" path="res://icon.svg" id="1_khmbx"]
+[ext_resource type="PackedScene" uid="uid://dqsk10sqdptju" path="res://character.tscn" id="2_25g3b"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ghmdr"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_dvmeu"]
+sky_material = SubResource("ProceduralSkyMaterial_ghmdr")
+
+[sub_resource type="Environment" id="Environment_oapwp"]
+background_mode = 2
+sky = SubResource("Sky_dvmeu")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a4ncs"]
+albedo_texture = ExtResource("1_khmbx")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_pykax"]
+size = Vector3(30, 0.5, 30)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_gckik"]
+data = PackedVector3Array(-15, 0.25, 15, 15, 0.25, 15, -15, -0.25, 15, 15, 0.25, 15, 15, -0.25, 15, -15, -0.25, 15, 15, 0.25, -15, -15, 0.25, -15, 15, -0.25, -15, -15, 0.25, -15, -15, -0.25, -15, 15, -0.25, -15, 15, 0.25, 15, 15, 0.25, -15, 15, -0.25, 15, 15, 0.25, -15, 15, -0.25, -15, 15, -0.25, 15, -15, 0.25, -15, -15, 0.25, 15, -15, -0.25, -15, -15, 0.25, 15, -15, -0.25, 15, -15, -0.25, -15, 15, 0.25, 15, -15, 0.25, 15, 15, 0.25, -15, -15, 0.25, 15, -15, 0.25, -15, 15, 0.25, -15, -15, -0.25, 15, 15, -0.25, 15, -15, -0.25, -15, 15, -0.25, 15, 15, -0.25, -15, -15, -0.25, -15)
+
+[sub_resource type="LabelSettings" id="LabelSettings_h06pr"]
+font_size = 28
+font_color = Color(1, 0, 0.0705882, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[node name="map" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_oapwp")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_a4ncs")
+mesh = SubResource("BoxMesh_pykax")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_gckik")
+
+[node name="Character" parent="." instance=ExtResource("2_25g3b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.03187, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.622665, 0.234869, -0.746408, 0, 0.95389, 0.300156, 0.782489, -0.186897, 0.593954, -2.43753, 2.25044, 2.75966)
+current = true
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 52.0
+grow_horizontal = 2
+text = "PRESS SPACE TO JUMP.
+WHY DO ANIMATIONS ONLY WORK ON FIRST JUMP?"
+label_settings = SubResource("LabelSettings_h06pr")
+horizontal_alignment = 1
